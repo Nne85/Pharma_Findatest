@@ -11,16 +11,23 @@ from sqlalchemy.types import Boolean
 
 class Drug(BaseModel, Base):
     """Representation of Drug """
-    __tablename__ = 'drugs'
-    drug_id = Column(String(60), primary_key=True)
-    name = Column(String(128), nullable=False)
-    description = Column(Text, nullable=True)
-    category = Column(String(128), nullable=True)
-    in_stock = Column(Boolean, default=True)
-    created_at = Column(DateTime)
-    updated_at = Column(DateTime)
-
-    pharmacy_stores = relationship("PharmacyStore", backref="drugs")
+    if models.storage_t == "db":
+        __tablename__ = 'drugs'
+        drug_id = Column(String(60), primary_key=True)
+        name = Column(String(128), nullable=False)
+        description = Column(Text, nullable=True)
+        category = Column(String(128), nullable=True)
+        in_stock = Column(Boolean, default=True)
+        created_at = Column(DateTime)
+        updated_at = Column(DateTime)
+        
+        pharmacy_stores = relationship("PharmacyStore", backref="drugs")
+    else:
+        drug_id = ""
+        name = ""
+        description = ""
+        category = ""
+        in_stock = "True"
 
     def __init__(self, *args, **kwargs):
         """initializes Drug"""

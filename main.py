@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 
 import sys
-import os
+from os import getenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+import models
 from models.base_model import BaseModel, Base
 from models.drugs import Drug
 from models.pharmacy_store import PharmacyStore
@@ -32,11 +33,39 @@ def main():
     Session = sessionmaker(bind=engine)
     session = Session()
 
-    data = sys.stdin.readline().strp()
-    drug = Drug(name=data)
+    # Read input data from stdin
+    input_data = sys.stdin.readline().strip()
 
-    session.add(drug)
+    # Extract attributes from input data
+    attributes = {}
+    for item in input_data.split():
+        key, value = item.split('=')
+        attributes[key] = value.strip('"')
+
+    # Create instances based on input data
+    if 'create' in attributes:
+        create_type = attributes.pop('create')
+
+        if create_type == 'Drug':
+            instance = Drug(**attributes)
+        elif create_type == 'PharmacyStore':
+            instance = PharmacyStore(**attributes)
+        elif create_type == 'DrugStoreInventory':
+            instance = DrugStoreInventory(**attributes)
+        elif create_type == 'UserSearches':
+            instance = UserSearches(**attributes)
+        elif create_type == 'UserFavorites':
+            instance = UserFavorites(**attributes)
+        elif create_type == 'User':
+            instance = User(**attributes)
+        else:
+            print(f"Unsupported create_type: {create_type}")
+            sys.exit(1)
+        
+        session.add(instance)
+    
     session.commit()
+    session.close()
 
 
 if __name__ == "__main__":

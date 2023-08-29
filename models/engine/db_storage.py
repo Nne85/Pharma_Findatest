@@ -6,7 +6,7 @@ Contains the class PHARMACY_Storage
 import models
 from models.drugs import Drug
 from models.base_model import BaseModel, Base
-from models.drugstore_inventory import DrugStoreInventory
+from models.drug_store_inventory import DrugStoreInventory
 from models.pharmacy_store import PharmacyStore
 from models.user_searches import UserSearches
 from models.user_favorites import UserFavorites
