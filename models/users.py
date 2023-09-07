@@ -1,23 +1,35 @@
+"""User Class Module"""
+
+from os import getenv
 import models
 from models.base_model import BaseModel, Base
-import sqlalchemy
-from sqlalchemy import Column, String, DateTime
+from sqlalchemy import Column, String, DateTime, Integer,\
+    MetaData, Table, ForeignKey
 from werkzeug.security import generate_password_hash, check_password_hash
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 
 
 class User(BaseModel, Base):
     """Representation of User """
-    __tablename__ = 'users'
-    user_id = Column(String(60), primary_key=True)
-    username = Column(String(128), nullable=False)
-    email = Column(String(128), nullable=False)
-    password_hash = Column(String(128), nullable=False)
-    created_at = Column(DateTime)
+    if models.storage_t == ("db"):
+        __tablename__ = 'users'
+        user_id = Column(Integer, primary_key=True, autoincrement=True)
+        username = Column(String(128), nullable=False)
+        email = Column(String(128), nullable=False)
+        password = Column(String(128), nullable=False)
+        created_at = Column(DateTime)
+        searches = relationship("UserSearches", backref="user")
+        favorites = relationship("UserFavorites", backref="user")
+        search_results = Column(String(512), nullable=True)
 
-    searches = relationship("UserSearches", backref="user")
-    favorites = relationship("UserFavorites", backref="user")
-    search_results = Column(String(512), nullable=True)
+    else:
+        user_id = ""
+        username = ""
+        email = ""
+        password = ""
+        searches = ""
+        favorites = ""
+        search_results = ""
 
     def __init__(self, *args, **kwargs):
         """initializes User"""

@@ -6,7 +6,7 @@ initialize the models package
 from os import getenv
 
 
-storage_t = getenv("db")
+storage_t = getenv("PHARMACY_Storage")
 
 if storage_t == "db":
     from models.engine.db_storage import PHARMACY_Storage
@@ -14,4 +14,5 @@ if storage_t == "db":
 else:
     from models.engine.file_storage import FileStorage
     storage = FileStorage()
+
 storage.reload()

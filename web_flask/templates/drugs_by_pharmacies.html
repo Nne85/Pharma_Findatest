@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pharmacies</title>
+</head>
+<body>
+    <h1>Pharmacies</h1>
+    <ul>
+        {% for pharmacy in pharmacies %}
+            <li>{{ pharmacy.store_id }}: <b>{{ pharmacy.name }}</b>
+                <ul>
+                    {% for drug in pharmacy.drugs %}
+                        <li>{{ drug.drug_id }}: <b>{{ drug.name }}</b></li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

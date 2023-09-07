@@ -4,20 +4,23 @@ Contains the class PHARMACY_Storage
 """
 
 import models
-from models.drugs import Drug
 from models.base_model import BaseModel, Base
-from models.drug_store_inventory import DrugStoreInventory
+from models.drugs import Drug
+from models.users import User
+from models. drug_store_inventory import DrugStoreInventory
 from models.pharmacy_store import PharmacyStore
+from models.user_drugs import UserDrug
 from models.user_searches import UserSearches
 from models.user_favorites import UserFavorites
-from models.users import User
 from os import getenv
 import sqlalchemy
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import scoped_session, sessionmaker
 
 classes = {"Drug": Drug, "PharmacyStore": PharmacyStore,
-           "UserSearches": UserSearches, "UserFavorites": UserFavorites, "DrugStoreInventory": DrugStoreInventory, "User": User}
+           "UserSearches": UserSearches, "UserFavorites": UserFavorites,
+           "DrugStoreInventory": DrugStoreInventory, "User": User,
+           "UserDrug": UserDrug}
 
 
 class PHARMACY_Storage:
@@ -56,10 +59,6 @@ class PHARMACY_Storage:
         self.__session.add(obj)
 
     def save(self):
-        """commit all changes of the current database session"""
-        self.__session.commit()
-
-    def save(self):
         """ saves objects to the current database session """
         self.__session.commit()
 
@@ -69,9 +68,8 @@ class PHARMACY_Storage:
 
     def delete(self, obj=None):
         """delete from the current database session obj if not None"""
-        if obj:
+        if obj is not None:
             self.__session.delete(obj)
-            self.save()
 
     def reload(self):
         """reloads data from the database"""
@@ -86,12 +84,16 @@ class PHARMACY_Storage:
 
     def get(self, cls, id):
         """retrieves object based on class and id """
-        if cls and id:
-            fetch ="{}.{}".format(cls, id)
+        if cls in classes.values() and id and type(id) == str:
             all.obj = self.all(cls)
-            return all.obj.get(fetch)
+            for key, value in all.obj.items():
+                if key.split(".")[1] == id:
+                        return value
         return None
     
     def count(self,cls=None):
         """return all object count"""
+        data = self.all(cls)
+        if cls in classes.values():
+            data = self.all(cls)
         return (len(self.all(cls)))

@@ -4,21 +4,22 @@ Contains the FileStorage class
 """
 
 import json
+from models.base_model import BaseModel
 from models.drugs import Drug
-from models.base_model import BaseModel, Base
-from models.drug_store_inventory import DrugStoreInventory
+from models.users import User
+from models. drug_store_inventory import DrugStoreInventory
 from models.pharmacy_store import PharmacyStore
 from models.user_searches import UserSearches
+from models.user_drugs import UserDrug
 from models.user_favorites import UserFavorites
-from models.users import User
 
 classes = {"Drug": Drug, "PharmacyStore": PharmacyStore,
-           "UserSearches": UserSearches, "UserFavorites": UserFavorites, "DrugStoreInventory": DrugStoreInventory, "User": User}
-
+           "UserSearches": UserSearches, "UserFavorites": UserFavorites,
+           "DrugStoreInventory": DrugStoreInventory, "User": User,
+           "UserDrug": UserDrug}
 
 class FileStorage:
     """serializes instances to a JSON file & deserializes back to instances"""
-
     # string - path to the JSON file
     __file_path = "file.json"
     # dictionary - empty but will store all objects by <class name>.id
@@ -73,14 +74,18 @@ class FileStorage:
         """
             retrieves one object based on class name and id
         """
-        if cls and id:
-            fetch_obj = "{}.{}".format(cls, id)
-            all_obj = self.all(cls)
-            return all_obj.get(fetch_obj)
+        if cls in classes.values() and id and type(id) == str:
+            d_obj = self.all(cls)
+            for key, value in d_obj.items():
+                if key.split(".")[1] == id:
+                    return value
         return None
 
     def count(self, cls=None):
         """
         count of all objects in storage
         """
+        data = self.all(cls)
+        if cls in classes.values():
+            data = self.all(cls)
         return (len(self.all(cls)))  
