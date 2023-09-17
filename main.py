@@ -1,72 +1,94 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
+""" Test link Many-To-Many HarmayStore <> Drug
+"""
 
-import sys
-from os import getenv
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-import models
-from models.base_model import BaseModel, Base
-from models.drugs import Drug
+from models import storage
 from models.pharmacy_store import PharmacyStore
-from models.drug_store_inventory import DrugStoreInventory
-from models.user_searches import UserSearches
-from models.user_favorites import UserFavorites
-from models.users import User
-
-def main():
-    """ Creates the database engine """
-    PHARMACY_MYSQL_USER = getenv('PHARMACY_MYSQL_USER')
-    PHARMACY_MYSQL_PWD = getenv('PHARMACY_MYSQL_PWD')
-    PHARMACY_MYSQL_HOST = getenv('PHARMACY_MYSQL_HOST')
-    PHARMACY_MYSQL_DB = getenv('PHARMACY_MYSQL_DB')
-    PHARMACY_ENV = getenv('PHARMACY_ENV')
-    engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
-                           format(PHARMACY_MYSQL_USER,
-                                  PHARMACY_MYSQL_PWD,
-                                  PHARMACY_MYSQL_HOST,
-                                  PHARMACY_MYSQL_DB))
-
-    """ Create tables"""
-    Base.metadata.create_all(engine)
-
-    """ Create a session """
-    Session = sessionmaker(bind=engine)
-    session = Session()
-
-    # Read input data from stdin
-    input_data = sys.stdin.readline().strip()
-
-    # Extract attributes from input data
-    attributes = {}
-    for item in input_data.split():
-        key, value = item.split('=')
-        attributes[key] = value.strip('"')
-
-    # Create instances based on input data
-    if 'create' in attributes:
-        create_type = attributes.pop('create')
-
-        if create_type == 'Drug':
-            instance = Drug(**attributes)
-        elif create_type == 'PharmacyStore':
-            instance = PharmacyStore(**attributes)
-        elif create_type == 'DrugStoreInventory':
-            instance = DrugStoreInventory(**attributes)
-        elif create_type == 'UserSearches':
-            instance = UserSearches(**attributes)
-        elif create_type == 'UserFavorites':
-            instance = UserFavorites(**attributes)
-        elif create_type == 'User':
-            instance = User(**attributes)
-        else:
-            print(f"Unsupported create_type: {create_type}")
-            sys.exit(1)
-        
-        session.add(instance)
-    
-    session.commit()
-    session.close()
+from models.drugs import Drug
+import uuid
 
 
-if __name__ == "__main__":
-    main()
+def generate_store_id():
+  """Generates a unique UUID value."""
+  return uuid.uuid4()
+
+# Generate a unique store_id
+store_id = generate_store_id()
+
+def generate_drug_id():
+  """Generates a unique UUID value."""
+  return uuid.uuid4()
+
+# Generate a unique drug_id
+drug_id = generate_drug_id()
+
+# Create instances of PharmacyStore
+pharmacy_store1 = PharmacyStore(
+        store_id = store_id,
+        name="Abiola Pharmacy",
+        address="123 Main St",
+        city="City A",
+        state="State A",
+        postal_code="12345",
+        country="Country A",
+        latitude=40.1234,
+        longitude=-75.5678,
+        )
+
+pharmacy_store2 = PharmacyStore(
+        store_id = store_id,
+        name="Babalola Pharmacy",
+        address="456 Elm St",
+        city="City B",
+        state="State B",
+        postal_code="67890",
+        country="Country B",
+        latitude=35.6789,
+        longitude=-80.1234,
+        )
+
+# Create instances of Drug
+drug1 = Drug(
+        drug_id = drug_id,
+        name="Diphastom",
+        price=10.99,
+        description="Description for Drug X",
+        category="Category X",
+)
+
+drug2 = Drug(
+        drug_id = drug_id,
+        name="Yeast tablets",
+        price=5.99,
+        description="Description for Drug Y",
+)
+
+# Associate drugs with pharmacy stores
+pharmacy_store1.drugs.append(drug1)
+pharmacy_store2.drugs.append(drug1)
+pharmacy_store2.drugs.append(drug2)
+
+# Save instances to the database
+storage.new(pharmacy_store1)
+storage.new(pharmacy_store2)
+storage.new(drug1)
+storage.new(drug2)
+storage.save()
+
+# Retrieve pharmacy stores for a specific drug
+drug1_pharmacies = drug1.pharmacy_stores
+if drug1_pharmacies:
+    print(f"Pharmacy stores where Diphastom is available:")
+    for store in drug1_pharmacies:
+        print(store.name)
+else:
+    print("Diphastom is not available in any pharmacy stores.")
+
+# Retrieve pharmacy stores for a specific drug
+drug2_pharmacies = drug2.pharmacy_stores
+if drug2_pharmacies:
+    print(f"Pharmacy stores where Yeast tablets is available:")
+    for store in drug2_pharmacies:
+        print(store.name)
+else:
+    print("Yeast tablets is not available in any pharmacy stores.")

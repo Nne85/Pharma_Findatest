@@ -5,6 +5,7 @@ import cmd
 import sys
 import re 
 import os
+import uuid
 from datetime import datetime
 import models
 from models import storage
@@ -75,6 +76,9 @@ class PHARMCommand(cmd.Cmd):
             return False
         if args[0] in classes:
             new_dict = self._key_value_parser(args[1:])
+            new_dict["name"] = new_dict.get("name", "")
+            new_dict["address"] = new_dict.get("address", "")
+            new_dict["store_id"] = str(uuid.uuid4())
             instance = classes[args[0]](**new_dict)
         else:
             print("** class doesn't exist **")

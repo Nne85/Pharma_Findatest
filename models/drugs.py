@@ -5,36 +5,43 @@ from models.base_model import BaseModel, Base
 import models
 import sqlalchemy
 from sqlalchemy import Column, String, DateTime, Text, MetaData, Table,\
-    ForeignKey, Integer
+    ForeignKey, Integer, Float
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.types import Boolean
+
+# Define the secondary association table for the many-to-many relationship
+pharmacy_stores_drugs = Table(
+    'pharmacy_stores_drugs',
+    Base.metadata,
+    Column('store_id', String(60), ForeignKey('pharmacy_stores.store_id')),
+    Column('drug_id', String(60), ForeignKey('drugs.drug_id'))
+)
 
 
 class Drug(BaseModel, Base):
     """Representation of Drug """
+    __tablename__ = 'drugs'
     if models.storage_t == "db":
-        __tablename__ = 'drugs'
-        drug_id = Column(Integer, primary_key=True, autoincrement=True,
-                        nullable=False)
-        name = Column(String(128), nullable=False)
+        drug_id = Column(String(60), primary_key=True)
+        name = Column(String(128), nullable=True)
         price = Column(Float, nullable=False)
         description = Column(Text, nullable=True)
         category = Column(String(128), nullable=True)
-        store_id = Column(Integer, ForeignKey('pharmacy_stores.store_id'))
+        store_id = Column(String(60), ForeignKey('pharmacy_stores.store_id'))
         in_stock = Column(Boolean, default=True)
         created_at = Column(DateTime)
         updated_at = Column(DateTime)
         
-        pharmacy_stores = relationship("PharmacyStore", back_populates="drugs", primaryjoin="Drug.store_id==PharmacyStore.store_id")
+        pharmacy_stores = relationship("PharmacyStore",
+                                       secondary="pharmacy_stores_drugs",
+                                       back_populates="drugs")
     else:
-
-        drug_id = ""
-        name = ""
-        price = 0
-        store_id = ""
-        description = ""
-        category = ""
-        in_stock = "True"
+        drug_id = None
+        name = None
+        price = None
+        description = None
+        category = None
+        in_stock = None
 
     def __init__(self, *args, **kwargs):
         """initializes Drug"""

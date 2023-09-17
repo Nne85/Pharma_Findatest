@@ -12,33 +12,33 @@ from sqlalchemy.ext.declarative import declarative_base
 import uuid 
 
 time = "%Y-%m-%dT%H:%M:%S.%f"
-
-if models.storage_t == "db":
-    Base = declarative_base()
-else:
-    Base = object
+Base = declarative_base()
 
 
 class BaseModel:
     """The BaseModel class from which future classes will be derived"""
-    if models.storage_t == "db":
-        id = Column(String(60), primary_key=True)
-        created_at = Column(DateTime, default=datetime.utcnow)
-        updated_at = Column(DateTime, default=datetime.utcnow)
+    id = Column(String(60), primary_key=True, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    updated_at = Column(DateTime, default=datetime.utcnow, nullable=False)
 
     def __init__(self, *args, **kwargs):
         """Initialization of the base model"""
-        self.id = str(uuid.uuid4())
-        self.created_at = datetime.now()
-        self.updated_at = self.created_at
-        for key, value in kwargs.items():
-            if key == '__class__':
-                continue
-            setattr(self, key, value)
-            if type(self.created_at) is str:
-                self.created_at = datetime.strptime(self.created_at, time)
-            if type(self.updated_at) is str:
-                self.updated_at = datetime.strptime(self.updated_at, time)
+        if kwargs:
+            for key, value in kwargs.items():
+                if key == '__class__':
+                    pass
+                elif key == 'created_a' or key == 'updated_at' or key == 'start_time' or key == 'stop_time':
+                    date_obj = datetime.strptime(value, time_fmt)
+                    setattr(self, key, date_obj)
+                else:
+                    setattr(self, key, value)
+                if kwargs.get("id", None) is None:
+                    self.id = str(uuid.uuid4())
+        else:
+            self.id = str(uuid.uuid4())
+            self.created_at = datetime.now()
+            self.updated_at = self.created_at
+            models.storage.new(self)
 
     def __str__(self):
         """String representation of the BaseModel class"""

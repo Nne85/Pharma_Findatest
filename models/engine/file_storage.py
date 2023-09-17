@@ -85,7 +85,13 @@ class FileStorage:
         """
         count of all objects in storage
         """
-        data = self.all(cls)
-        if cls in classes.values():
-            data = self.all(cls)
-        return (len(self.all(cls)))  
+        number = 0
+        if cls:
+            for key, value in self.__objects.items():
+                 name = str(cls).split('.')[2].split("'")[0]
+                 if value._dict()['__class__'] == name:
+                     number += 1
+        else:
+            for key, value in self.__objects.items():
+                number += 1
+            return number

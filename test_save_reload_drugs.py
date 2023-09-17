@@ -9,24 +9,32 @@ for obj_id in all_objs.keys():
     obj = all_objs[obj_id]
     print(obj)
 
-print("-- Create a new Drug 1 --")
-my_drug = Drug()
-my_drug.name = "Omeprazole"
-my_drug.description = "Manages peptic ulcer"
-my_drug.category = "Peptic Ulcer Management"
-my_drug.price = 30.0
-my_drug.in_stock = "True"
-my_drug_id = "0001"
-my_drug.save()
-print(my_drug)
+print("-- Create a new Drug --")
+my_drugs = Drug()
+my_drugs.name = "Diclofenac"
+my_drugs.price= 200.55
+my_drugs.description = "Pain Relieve"
+my_drugs.category = "Pain Management"
+my_drugs.in_stock = True
+my_drugs.save()
+print(my_drugs)
 
 print("-- Create a new Drug 2 --")
-my_drug = Drug()
-my_drug.name = "Paracetemol"
-my_drug.description = "Pain relieve"
-my_drug.category = "Pain Management"
-my_drug.price = 57.20
-my_drug.in_stock = "True"
-my_drug_id = "0002"
-my_drug.save()
-print(my_drug)
+my_drugs = Drug()
+my_drugs.name = "Paracetemol"
+my_drugs.price= 200.55
+my_drugs.description = "Pain Relieve"
+my_drugs.category = "Pain Management"
+my_drugs.in_stock = True
+my_drugs.save()
+print(my_drugs)
+
+print("-- Create a new Drug 3 --")
+my_drugs = Drug()
+my_drugs.name = "Vitamin C"
+my_drugs.price= 200.55
+my_drugs.description = "Multivitamin"
+my_drugs.category = "Supplement"
+my_drugs.in_stock = True
+my_drugs.save()
+print(my_drugs)

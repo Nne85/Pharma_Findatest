@@ -11,7 +11,6 @@ for obj_id in all_objs.keys():
 
 print("-- Create a new UserSearches 1 --")
 my_usersearch = UserSearches()
-my_usersearch.search_id =  "001i"
 my_usesearch.search_results = ""
 my_usersearch.search_date = datetime.datetime.now()
 my_usersearch.save()
@@ -19,7 +18,6 @@ print(my_usersearch)
 
 print("-- Create a new UserSeaches 2 --")
 my_usersearch = UserSearches()
-my_usersearch.search_id =  "002"
 my_usersearch.search_results = ""
 my_usersearch.search_date = datetime.datetime.now()
 my_usersearch.save()

@@ -4,16 +4,18 @@ from os import getenv
 import models
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, DateTime, Integer,\
-    MetaData, Table, ForeignKey
+    MetaData, Table, ForeignKey, Index
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.orm import relationship, backref
+
+storage_t = getenv("PHARMACY_Storage")
 
 
 class User(BaseModel, Base):
     """Representation of User """
+    __tablename__ = 'users'
     if models.storage_t == ("db"):
-        __tablename__ = 'users'
-        user_id = Column(Integer, primary_key=True, autoincrement=True)
+        user_id = Column(String(60), primary_key=True)
         username = Column(String(128), nullable=False)
         email = Column(String(128), nullable=False)
         password = Column(String(128), nullable=False)
@@ -21,12 +23,13 @@ class User(BaseModel, Base):
         searches = relationship("UserSearches", backref="user")
         favorites = relationship("UserFavorites", backref="user")
         search_results = Column(String(512), nullable=True)
+        __table_args__ = (Index('idx_users_user_id', 'user_id'),)
 
     else:
-        user_id = ""
-        username = ""
-        email = ""
-        password = ""
+        user_id = None
+        username = None
+        email = None
+        password = None
         searches = ""
         favorites = ""
         search_results = ""

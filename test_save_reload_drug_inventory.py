@@ -11,14 +11,12 @@ for obj_id in all_objs.keys():
 
 print("-- Create a new DrugStoreInventory 1 --")
 my_druginventory = DrugStoreInventory()
-my_druginventory.inventory_id =  "001"
 my_druginventory.stock_quantity = 12
 my_druginventory.save()
 print(my_druginventory)
 
 print("-- Create a new DrugStoreInventory 2 --")
 my_druginventory = DrugStoreInventory()
-my_druginventory.inventory_id =  "002"
 my_druginventory.stock_quantity = 15
 my_druginventory.save()
 print(my_druginventory)

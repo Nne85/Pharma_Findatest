@@ -4,17 +4,18 @@
 import models
 from models.base_model import BaseModel, Base
 from os import getenv
-from sqlalchemy import Column, String, Float, ForeignKey, DateTime
+from sqlalchemy import Column, String, Float, ForeignKey, DateTime, Index
 from sqlalchemy.orm import relationship, backref
+
+storage_t = getenv("PHARMACY_Storage")
 
 
 class PharmacyStore(BaseModel, Base):
     """Representation of PharmacyStore """
+    __tablename__ = 'pharmacy_stores'
     if models.storage_t == ("db"):
-        __tablename__ = 'pharmacy_stores'
-        store_id = Column(Integer, primary_key=True,
-                          autoincrement=True, nullable=False)
-        name = Column(String(128), nullable=False)
+        store_id = Column(String(60), primary_key=True)
+        name = Column(String(128), nullable=True)
         address = Column(String(1024), nullable=True)
         city = Column(String(60), nullable=False)
         state = Column(String(60), nullable=False)
@@ -24,19 +25,21 @@ class PharmacyStore(BaseModel, Base):
         longitude = Column(Float, nullable=False)
         created_at = Column(DateTime)
         updated_at = Column(DateTime)
-        drugs = relationship("Drug", back_populates="pharmacy_stores", primaryjoin="Drug.store_id==PharmacyStore.store_id")
-
+        drugs = relationship("Drug", back_populates="pharmacy_stores",
+                             secondary="pharmacy_stores_drugs")
+        __table_args__ = (
+            Index('idx_store_id', 'store_id'),)
     else:
-        store_id = ""
-        name = ""
-        address = ""
-        city = ""
-        state = ""
-        postal_code = ""
-        country = ""
-        latitude = 0.0
+        store_id = None
+        name = None
+        address = None
+        city = None
+        state = None
+        postal_code = None
+        country = None
+        latitude = None
 
-        longitude = 0.0
+        longitude = None
 
     def __init__(self, *args, **kwargs):
         """initializes PharmacyStore"""

@@ -12,14 +12,12 @@ for obj_id in all_objs.keys():
 
 print("-- Create a new UserFavorites 2 --")
 my_userfav = UserFavorites()
-my_userfav.favorite_id =  "002"
 my_userfav.favorite_reason = ""
 my_userfav.save()
 print(my_userfav)
 
 print("-- Create a new UserFavorites 2 --")
 my_userfav = UserFavorites()
-my_userfav.favorite_id =  "002"
 my_userfav.favorite_reason = ""
 my_userfav.save()
 print(my_userfav)

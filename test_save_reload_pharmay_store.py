@@ -17,7 +17,6 @@ my_pharmacy.city = "Lagos"
 my_pharmacy.state = "Lagos"
 my_pharmacy.portal_code = "LA"
 my_pharmacy.country = "Nigeria"
-my_pharmacy.store_id = "0001"
 my_pharmacy.latitude = 127.8
 my_pharmacy_longitude = 55.9
 my_pharmacy.save()
@@ -31,7 +30,6 @@ my_pharmacy.city = "Lagos"
 my_pharmacy.state = "Lagos"
 my_pharmacy.portal_code = "LA"
 my_pharmacy.country = "Nigeria"
-my_pharmacy.store_id = "0002"
 my_pharmacy.latitude = 127.87
 my_pharmacy_longitude = 85.9
 my_pharmacy.save()
