@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loginForm.addEventListener('submit', (e) => {
         e.preventDefault();
         
-        const username = document.getElementById('name').value;
+        const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
         
         // Send login request to the server for authentication
@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ name, password })
+            body: JSON.stringify({ username, password })
         })
         .then(response => response.json())
         .then(data => {

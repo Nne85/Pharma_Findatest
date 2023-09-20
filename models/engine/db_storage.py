@@ -84,16 +84,12 @@ class PHARMACY_Storage:
 
     def get(self, cls, id):
         """retrieves object based on class and id """
-        if cls in classes.values() and id and type(id) == str:
-            all.obj = self.all(cls)
-            for key, value in all.obj.items():
-                if key.split(".")[1] == id:
-                        return value
-        return None
+        obj = self.__session.query(cls).get(id)
+        if obj is None:
+            return None
+        return obj
     
     def count(self,cls=None):
         """return all object count"""
-        data = self.all(cls)
-        if cls in classes.values():
-            data = self.all(cls)
-        return (len(self.all(cls)))
+        objs = self.all(cls)
+        return (len(objs))

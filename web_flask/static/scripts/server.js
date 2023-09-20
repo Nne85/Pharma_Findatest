@@ -1,4 +1,4 @@
-//LOGIN SERVER-SIDE JS
+i//LOGIN SERVER-SIDE JS
 //
 
 const express = require('express');
@@ -11,10 +11,10 @@ const port = 3000;
 
 // Create a MySQL database connection
 const connection = mysql.createConnection({
-    host: 'host', // replace placeholder
-    user: 'pharmacy_dev', // replace placeholder
-    password: 'pharmacy_dev_pwd', // replace placeholder
-    database: 'pharmacy_dev_db' // replace placeholder
+    host: 'database-host', // replace placeholder
+    user: 'username', // replace placeholder
+    password: 'password', // replace placeholder
+    database: 'database-name' // replace placeholder
 });
 
 // Connect to the database
@@ -31,10 +31,10 @@ app.use(bodyParser.json());
 
 // Handle login POST request
 app.post('/login', (req, res) => {
-    const { name, password } = req.body;
+    const { username, password } = req.body;
     
-    // Query the database to find the urs WHser by username
-    connection.query('SELECT * FROM users WHERE name = ?', [name], (dbError, results) => {
+    // Query the database to find the user by username
+    connection.query('SELECT * FROM users WHERE username = ?', [username], (dbError, results) => {
         if (dbError) {
             console.error('Database error:', dbError);
             return res.status(500).json({ success: false, message: 'Database error' });
@@ -99,7 +99,7 @@ app.use(bodyParser.json());
 
 // Define Registration Route
 app.post('/register', (req, res) => {
-    const { name, email, password } = req.body;
+    const { username, email, password } = req.body;
 
     // Hash the password before storing it in the database
     bcrypt.hash(password, 10, (hashError, hash) => {
@@ -109,7 +109,7 @@ app.post('/register', (req, res) => {
         }
 
         // Insert the user into the database
-        connection.query('INSERT INTO users (name, email, passwordHash) VALUES (?, ?, ?)', [name, email, hash], (dbError, results) => {
+        connection.query('INSERT INTO users (username, email, passwordHash) VALUES (?, ?, ?)', [username, email, hash], (dbError, results) => {
             if (dbError) {
                 console.error('Database error:', dbError);
                 return res.status(500).json({ success: false, message: 'Registration failed' });

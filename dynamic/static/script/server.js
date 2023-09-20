@@ -11,7 +11,7 @@ const port = 3000;
 
 // Create a MySQL database connection
 const connection = mysql.createConnection({
-    host: 'host', // replace placeholder
+    host: 'localhost', // replace placeholder
     user: 'pharmacy_dev', // replace placeholder
     password: 'pharmacy_dev_pwd', // replace placeholder
     database: 'pharmacy_dev_db' // replace placeholder
@@ -31,9 +31,9 @@ app.use(bodyParser.json());
 
 // Handle login POST request
 app.post('/login', (req, res) => {
-    const { name, password } = req.body;
+    const { username, password } = req.body;
     
-    // Query the database to find the urs WHser by username
+    // Query the database to find the user by username
     connection.query('SELECT * FROM users WHERE name = ?', [name], (dbError, results) => {
         if (dbError) {
             console.error('Database error:', dbError);

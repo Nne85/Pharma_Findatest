@@ -16,7 +16,7 @@ class UserFavorites(BaseModel, Base):
     __tablename__ = 'user_favorites'
     if models.storage_t == ("db"):
         favorite_id = Column(String(60), primary_key=True)
-        user_id = Column(String(60), ForeignKey('users.user_id'), nullable=False)
+        user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
         store_id = Column(String(60),  ForeignKey('pharmacy_stores.store_id'), nullable=False)
         created_at = Column(DateTime)
         favorite_reason = Column(String(256), nullable=True)

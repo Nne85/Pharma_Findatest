@@ -16,7 +16,7 @@ class UserDrug(BaseModel, Base):
     """Representation of UserDrug """
     __tablename__ = 'user_drugs'
     if models.storage_t == "db":
-        user_id = Column(String(60), ForeignKey('users.user_id'), nullable=False)
+        user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
         drug_id = Column(String(60), ForeignKey('drugs.drug_id'), nullable=False)
 
     else:

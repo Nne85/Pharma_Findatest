@@ -74,24 +74,16 @@ class FileStorage:
         """
             retrieves one object based on class name and id
         """
-        if cls in classes.values() and id and type(id) == str:
-            d_obj = self.all(cls)
-            for key, value in d_obj.items():
-                if key.split(".")[1] == id:
-                    return value
-        return None
+        obj = self.__session.query(cls).get(id)
+        if obj is None:
+            return None
+        return obj
 
     def count(self, cls=None):
         """
         count of all objects in storage
         """
-        number = 0
-        if cls:
-            for key, value in self.__objects.items():
-                 name = str(cls).split('.')[2].split("'")[0]
-                 if value._dict()['__class__'] == name:
-                     number += 1
-        else:
-            for key, value in self.__objects.items():
-                number += 1
-            return number
+        objs = self.all(cls)
+        return (len(objs))
+
+        return count

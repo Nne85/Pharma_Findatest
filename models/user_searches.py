@@ -16,8 +16,8 @@ class UserSearches(BaseModel, Base):
     __tablename__ = 'user_searches'
     if models.storage_t == ("db"):
         search_id = Column(String(60), primary_key=True)
-        user_id = Column(String(60), ForeignKey('users.user_id'), nullable=False)
-        drug_id = Column(String(60), ForeignKey('drugs.drug_id'), nullable=False)
+        user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
+        drug_id = Column(String(60), ForeignKey('drugs.id'), nullable=False)
         search_date = Column(DateTime, nullable=False)
         search_results = Column(String(512), nullable=True)
     else:

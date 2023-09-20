@@ -11,10 +11,20 @@ app = Flask(__name__)
 def test():
     return "<p>This is a Test script</p>"
 """
+
 @app.route('/drugs_by_pharmacies', strict_slashes=False)
 def display_drugs_by_pharmacies():
-    pharmacies = sorted(storage.all(PharmacyStore).values(), key=lambda x: x.name)
+    pharmacies = storage.all(PharmacyStore).values()
+    pharmacies = [pharmacy for pharmacy in pharmacies if pharmacy and pharmacy.name is not None]
+    pharmacies = sorted(pharmacies, key=lambda x: x.name)
     return render_template('drugs_by_pharmacies.html', pharmacies=pharmacies)
+
+
+@app.route('/index', strict_slashes=False)
+def display_drugs():
+    return render_template('index.html')
+
+
 
 @app.teardown_appcontext
 def teardown_db(exception):
