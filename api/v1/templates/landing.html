@@ -3,48 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pharma Finder - Home</title>
-    <link rel="stylesheet" href="styles/styles.css"> 
-     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles/landing.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/landing.css')}}">
+    <script type="text/javscript" src="{{ url_for('static', filename='scripts/main.js')}}"></script>
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container">
-                <!-- Logo -->
-                <a class="navbar-brand" href="#">
-                    <div class="logo-text">
-                        <span class="logo-text-top">PHARMA</span><br>
-                        <span class="logo-text-bottom">FINDER</span>
-                    </div>
-                </a>
-                <!-- Menu -->
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">About</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Contact</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
+    <div class="container">
+        <h1>Pharma Finda - Landing Page</h1>
+        <input type="text" id="searchInput" placeholder="Enter drug name" required>
+        <button id="searchButton">Search</button>
 
-    <!-- content here -->
+        <div class="carousel">
+            
+    </div>
 
-    <footer class="text-center mt-3">
-        &copy; 2023 Pharma Finder
-    </footer>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="js/script.js"></script>
+    <article>
+            Find the nearest Pharmacy with one click.
+    </article>
 </body>
 </html>

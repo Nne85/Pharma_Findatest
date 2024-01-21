@@ -11,7 +11,7 @@ from sqlalchemy import Column, Float, Integer, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 import uuid 
 
-time = "%Y-%m-%dT%H:%M:%S.%f"
+time_fmt = "%Y-%m-%dT%H:%M:%S.%f"
 Base = declarative_base()
 
 
@@ -27,7 +27,7 @@ class BaseModel:
             for key, value in kwargs.items():
                 if key == '__class__':
                     pass
-                elif key == 'created_a' or key == 'updated_at' or key == 'start_time' or key == 'stop_time':
+                elif key == 'created_at' or key == 'updated_at' or key == 'start_time' or key == 'stop_time':
                     date_obj = datetime.strptime(value, time_fmt)
                     setattr(self, key, date_obj)
                 else:
@@ -55,9 +55,9 @@ class BaseModel:
         """returns a dictionary containing all keys/values of the instance"""
         new_dict = self.__dict__.copy()
         if "created_at" in new_dict:
-            new_dict["created_at"] = new_dict["created_at"].strftime(time)
+            new_dict["created_at"] = new_dict["created_at"].strftime(time_fmt)
         if "updated_at" in new_dict:
-            new_dict["updated_at"] = new_dict["updated_at"].strftime(time)
+            new_dict["updated_at"] = new_dict["updated_at"].strftime(time_fmt)
         new_dict["__class__"] = self.__class__.__name__
         if "_sa_instance_state" in new_dict:
             del new_dict["_sa_instance_state"]

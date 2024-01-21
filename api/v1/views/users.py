@@ -11,6 +11,8 @@ from models.pharmacy_store import PharmacyStore
 from models.drugs import Drug
 import os
 
+
+
 def hash_password(password):
     # Create a new SHA-256 hash object
     sha256_hash = hashlib.sha256()
@@ -124,11 +126,11 @@ def login_user():
             if user_dict['password'] == hashed_password(request.form['password']):
                 session['user_id'] = user_dict['id']
                 session['name'] = user_dict['name']
-                return redirect(url_for('appviews.home'))
+                return redirect(url_for('appviews.landing_page'))
             else:
-                return redirect(url_for('appviews.home'))
+                return redirect(url_for('appviews.landing_page'))
         else:
-            return redirect(url_for('appviews.home'))
+            return redirect(url_for('appviews.landing_page'))
     else:
         return render_template('login.html')
 
@@ -142,18 +144,9 @@ def logout():
     return redirect(url_for('appviews.login_user'))
 
 
-@app_views.route("/index", strict_slashes=False)
-def homepage():
-    """
-    on user login direct user to home screen with user's username and id
-    or redirect to login screen if login detailsare inaccurate
-    """
-    return render_template('index.html')
-
-
 @app_views.route("/", strict_slashes=False)
 def landing_page():
     """
     direct user to the landing page
     """
-    return render_template('landing.html')
+    return render_template('landing.html', pharmacy_shops=pharmacy_shops)

@@ -17,7 +17,9 @@ cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 @app.teardown_appcontext
 def close_storage(exception):
     """Closes the storage on teardown."""
-    storage.close()
+    PHARMACY_ENV = getenv('PHARMACY_ENV')
+    if PHARMACY_ENV = db:
+        storage.close()
 
 
 @app.errorhandler(404)
